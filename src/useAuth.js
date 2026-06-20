@@ -1,6 +1,10 @@
 // src/useAuth.js
 import { useState, useEffect } from 'react';
-import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut
+} from "firebase/auth";
 import { auth, googleProvider } from './firebase';
 
 export function useAuth() {
@@ -8,18 +12,19 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setLoading(false);
-    });
-    return unsub;
-  }, []);
+  const unsub = onAuthStateChanged(auth, (u) => {
+    setUser(u);
+    setLoading(false);
+  });
 
-  const loginWithGoogle = async () => {
+  return unsub;
+}, []);
+const loginWithGoogle = async () => {
     // This opens the REAL Google account picker popup.
     // The user selects which of their Google accounts to use.
-    await signInWithPopup(auth, googleProvider);
-  };
+  await signInWithPopup(auth, googleProvider);
+};
+  
 
   const logout = () => signOut(auth);
 
